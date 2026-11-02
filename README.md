@@ -31,7 +31,37 @@ B2. interface students { name: string, age: number };
     getName();
     getAge();
 
+C2.
+        function allSettled(promises) {
+            return new Promise((resolve) => {
+        const promiseArray = Array.from(promises);
+        
+        if (promiseArray.length === 0) {
+        resolve([]);
+        return;
+        }
 
+        const results = new Array(promiseArray.length);
+        let settledCount = 0;
+
+        promiseArray.forEach((item, index) => {
+        Promise.resolve(item)
+            .then((value) => {
+            results[index] = { status: 'fulfilled', value };
+            })
+            .catch((reason) => {
+            results[index] = { status: 'rejected', reason };
+            })
+            .finally(() => {
+            settledCount++;
+            
+            if (settledCount === promiseArray.length) {
+                resolve(results);
+            }
+            });
+        });
+    });
+    }
 E1.  => RATING COMPONENT
     export class RatingComponent {
     value = model<number>(1);
